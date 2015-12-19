@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView contactImgView;
     List<Contact> Contacts = new ArrayList<Contact>();
     ListView contactListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         phoneTxt = (EditText) findViewById(R.id.txtPhone);
         emailTxt = (EditText) findViewById(R.id.txtEmail);
         adresTxt = (EditText) findViewById(R.id.txtAdres);
+
         contactListView = (ListView) findViewById(R.id.listView);
         contactImgView = (ImageView) findViewById(R.id.imgViewContactImage);
 
@@ -49,12 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("creator");
         tabSpec.setContent(R.id.creatorTab);
-        tabSpec.setIndicator("Creator");
+        tabSpec.setIndicator("Kişi Oluştur");
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("list");
         tabSpec.setContent(R.id.contactTab);
-        tabSpec.setIndicator("List");
+        tabSpec.setIndicator("Kişiler");
         tabHost.addTab(tabSpec);
 
         final Button addBtn = (Button) findViewById(R.id.btnEkle);
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 addContact(nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString());
+                populateList();
                 Toast.makeText(getApplicationContext(), nameTxt.getText().toString() + " Kişi Listesine Eklendi.", Toast.LENGTH_SHORT).show();
             }
         });
