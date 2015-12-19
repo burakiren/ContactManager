@@ -8,8 +8,8 @@
     android:orientation="vertical">
 
     <TabHost
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/tabHost">
 
         <LinearLayout
@@ -26,6 +26,28 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/contactTab"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Large Text"
+                        android:id="@+id/textView"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp" />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/listView"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/creatorTab"
@@ -100,11 +122,6 @@
 
             </FrameLayout>
 
-            <LinearLayout
-                android:id="@+id/contactTab"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"></LinearLayout>
         </LinearLayout>
     </TabHost>
 

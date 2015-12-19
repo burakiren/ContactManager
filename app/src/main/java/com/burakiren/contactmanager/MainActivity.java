@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText nameTxt, phoneTxt, emailTxt, adresTxt;
     ImageView contactImgView;
-    //List<Contact> Contacts = new ArrayList<Contact>();
+    List<Contact> Contacts = new ArrayList<Contact>();
     ListView contactListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,13 +127,13 @@ public class MainActivity extends AppCompatActivity {
     }
     private void populateList()
     {
-        //ArrayAdapter<Contact> adapter = new ContactListAdapter();
-        //cotactListView.setAdapter(adapter);
+        ArrayAdapter<Contact> adapter = new ContactListAdapter();
+        contactListView.setAdapter(adapter);
     }
 
     private void addContact(String name, String phone, String email, String address)
     {
-        //Contacts.add(new Contact(name, phone, email, address));
+        Contacts.add(new Contact(name, phone, email, address));
     }
 
     private class ContactListAdapter extends ArrayAdapter<Contact>
