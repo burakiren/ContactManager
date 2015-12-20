@@ -1,6 +1,7 @@
 package com.burakiren.contactmanager;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView contactImgView;
     List<Contact> Contacts = new ArrayList<Contact>();
     ListView contactListView;
+    Uri imageURI = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                addContact(nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString());
+                Contacts.add(new Contact(nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString(), imageURI));
                 populateList();
                 Toast.makeText(getApplicationContext(), nameTxt.getText().toString() + " Kişi Listesine Eklendi.", Toast.LENGTH_SHORT).show();
             }
@@ -136,18 +139,16 @@ public class MainActivity extends AppCompatActivity {
     {
         if(resCode == RESULT_OK)
         {
-            contactImgView.setImageURI(data.getData());
+            if(reqCode == 1) {
+                imageURI = data.getData();
+                contactImgView.setImageURI(data.getData());
+            }
         }
     }
     private void populateList()
     {
         ArrayAdapter<Contact> adapter = new ContactListAdapter();
         contactListView.setAdapter(adapter);
-    }
-
-    private void addContact(String name, String phone, String email, String address)
-    {
-        Contacts.add(new Contact(name, phone, email, address));
     }
 
     private class ContactListAdapter extends ArrayAdapter<Contact>
@@ -173,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
             address.setText(currentContact.getAddress());
             TextView email = (TextView) view.findViewById(R.id.emailAddress);
             email.setText(currentContact.getEmail());
+            ImageView ivContactImage = (ImageView) view.findViewById(R.id.ivContactImage);
+            ivContactImage.setImageURI(currentContact.getImageURI());
 
             return view;
         }
