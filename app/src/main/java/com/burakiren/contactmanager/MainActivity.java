@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     List<Contact> Contacts = new ArrayList<Contact>();
     ListView contactListView;
     Uri imageURI = null;
+    Contact contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Contacts.add(new Contact(1, nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString(), imageURI));
+                Contacts.add(new Contact(contact.getId(), nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString(), imageURI));
                 populateList();
                 Toast.makeText(getApplicationContext(), nameTxt.getText().toString() + " Kişi Listesine Eklendi.", Toast.LENGTH_SHORT).show();
             }
