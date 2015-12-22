@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ListView contactListView;
     Uri imageURI = null;
     Contact contact;
+    DatabaseHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +64,13 @@ public class MainActivity extends AppCompatActivity {
         tabSpec.setIndicator("Kişiler");
         tabHost.addTab(tabSpec);
 
+        dbHandler = new DatabaseHandler(getApplicationContext());
         final Button addBtn = (Button) findViewById(R.id.btnEkle);
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Contacts.add(new Contact(1, nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString(), imageURI));
+                Contacts.add(new Contact(dbHandler.getContactsCount(), nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString(), imageURI));
                 populateList();
                 Toast.makeText(getApplicationContext(), nameTxt.getText().toString() + " Kişi Listesine Eklendi.", Toast.LENGTH_SHORT).show();
             }
