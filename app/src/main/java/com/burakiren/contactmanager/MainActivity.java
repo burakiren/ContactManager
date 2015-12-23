@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView contactImgView;
     List<Contact> Contacts = new ArrayList<Contact>();
     ListView contactListView;
-    Uri imageURI = null;
-    Contact contact;
+    Uri imageURI = Uri.parse("android.resource://com.burakiren.contactmanager/drawable/no_user_logo.png");
     DatabaseHandler dbHandler;
 
     @Override
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         contactListView = (ListView) findViewById(R.id.listView);
         contactImgView = (ImageView) findViewById(R.id.imgViewContactImage);
+        dbHandler = new DatabaseHandler(getApplicationContext());
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
 
@@ -64,15 +64,20 @@ public class MainActivity extends AppCompatActivity {
         tabSpec.setIndicator("Kişiler");
         tabHost.addTab(tabSpec);
 
-        dbHandler = new DatabaseHandler(getApplicationContext());
         final Button addBtn = (Button) findViewById(R.id.btnEkle);
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Contacts.add(new Contact(dbHandler.getContactsCount(), nameTxt.getText().toString(), phoneTxt.getText().toString(), emailTxt.getText().toString(), adresTxt.getText().toString(), imageURI));
-                populateList();
-                Toast.makeText(getApplicationContext(), nameTxt.getText().toString() + " Kişi Listesine Eklendi.", Toast.LENGTH_SHORT).show();
+                Contact contact = new Contact(dbHandler.getContactsCount(), String.valueOf(nameTxt.getText()), String.valueOf(phoneTxt.getText()), String.valueOf(emailTxt.getText()), String.valueOf(adresTxt.getText()), imageURI);
+                if(!contactExists(contact)) {
+                    dbHandler.createContact(contact);
+                    Contacts.add(contact);
+                    Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText().toString()) + " Kişi Listesine Eklendi.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText().toString()) + " Kişi Listesinde Mevcut.", Toast.LENGTH_SHORT).show();
+
             }
         });
         nameTxt.addTextChangedListener(new TextWatcher() {
@@ -103,17 +108,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
+        if(dbHandler.getContactsCount() != 0)
+            Contacts.addAll(dbHandler.getAllContacts());
+
+        populateList();
+
     }
 
     @Override
@@ -138,6 +138,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    private boolean contactExists(Contact contact)
+    {
+        String name = contact.getName();
+        int contactCount = Contacts.size();
+
+        for (int i = 0; i< contactCount; i++)
+            if(name.compareToIgnoreCase(Contacts.get(i).getName()) == 0)
+                return true;
+        return false;
+    }
     public void onActivityResult(int reqCode, int resCode, Intent data)
     {
         if(resCode == RESULT_OK)
